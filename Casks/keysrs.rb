@@ -9,15 +9,15 @@ cask "keysrs" do
   # updater fixtures pin; Keysrs tags are the version with a v.
   url "https://github.com/gshost1/Keysreallysafe/releases/download/v#{version}/Keysrs-arm64.dmg"
   name "Keysrs"
-  desc "Local Mac usage meter and API-key vault"
-  homepage "https://keysrs.com"
-
-  # macOS 14+ is the supported range (CLAUDE.md).
-  depends_on macos: ">= :sonoma"
+  desc "Local usage meter and API-key vault"
+  homepage "https://keysrs.com/"
 
   # The app updates itself in place (Check for Updates, 0.11.0+), which is the
   # canonical update path; brew upgrade needs --greedy to force one anyway.
   auto_updates true
+  # macOS 14+ is the supported range (CLAUDE.md).
+  depends_on macos: :sonoma
+
   app "Keysrs.app"
   # The one-binary CLI. A symlinked launch is the app's own documented CLI
   # path: app mode resolves through the symlink and re-execs the real bundle
@@ -28,6 +28,12 @@ cask "keysrs" do
 
   # Trash-only, matching the frozen paths CLAUDE.md names.
   zap trash: [
+    # Updater swap leftovers beside the app (AppUpdater's incoming and
+    # previous names, swept on launch but left if the helper died).
+    "#{appdir}/.Keysrs.app.incoming",
+    "#{appdir}/.Keysrs.app.previous",
+    # The app's own CLI symlink (Install Command Line Tool).
+    "~/.local/bin/keys",
     # The whole Keysreallysafe tree: catalog.db, control.json, menubar.log,
     # relay.lock, imports/, backups/, .previous/ (and .previous-<uuid>
     # staging) and the retired 0.9.x runtime dirs bin/, Web/, Fixtures/,
@@ -35,15 +41,9 @@ cask "keysrs" do
     "~/Library/Application Support/Keysreallysafe",
     # The legacy launchd agent com.keysreallysafe.menubar 0.9.x installed.
     "~/Library/LaunchAgents/com.keysreallysafe.menubar.plist",
-    # The app's own CLI symlink (Install Command Line Tool).
-    "~/.local/bin/keys",
     # The status-item autosave position is the only UserDefaults residue; the
     # cask DSL removes defaults at file level, and this domain holds nothing
     # else of Keysrs'.
     "~/Library/Preferences/com.keysreallysafe.keysrs.plist",
-    # Updater swap leftovers beside the app (AppUpdater's incoming and
-    # previous names, swept on launch but left if the helper died).
-    "#{appdir}/.Keysrs.app.incoming",
-    "#{appdir}/.Keysrs.app.previous",
   ]
 end
