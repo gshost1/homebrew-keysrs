@@ -2,8 +2,8 @@
 # packaging/homebrew/keysrs.rb in gshost1/Keysreallysafe; its version and
 # sha256 are filled from the release DMG by scripts/prepare-release.py.
 cask "keysrs" do
-  version "0.16.0"
-  sha256 "4c66c8eaf36f8e0517ff00571e36e35108b2f5567dec1f758b4ee7695ef32395"
+  version "0.17.0"
+  sha256 "83ed8b0952cd4b4c8300aeb53cecea1662369d9df2b1b5719357936b062b4d1f"
 
   # The frozen DMG name and the versioned release-download URL the app's own
   # updater fixtures pin; Keysrs tags are the version with a v.
